@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'code_string', ['>= 0.0.1']
   spec.add_dependency 'i18n-complements', ['>= 0']
   spec.add_dependency 'onoma', '~> 0.4'
-  spec.add_dependency 'rails', ['>= 3.2', '< 6']
+  spec.add_dependency 'rails', ['>= 3.2', '< 6.2']
   spec.add_dependency 'rodf', '~> 1.1'
   spec.add_dependency 'rubyzip', ['>= 1.0']
 
