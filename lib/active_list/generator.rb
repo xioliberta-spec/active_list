@@ -87,7 +87,12 @@ module ActiveList
       # For Rails 5
       code << "options.update(params.to_unsafe_h)\n"
       if defined?(User) && User.instance_methods.include?(:preference)
-        code << "#{var_name(:params)} = YAML::load(current_user.preference('list.#{view_method_name}', YAML::dump({})).value).symbolize_keys\n"
+        # Ruby 3.1 (Psych 4): YAML.load is safe-load by default and rejects
+        # the Hash's own values/structure once anything beyond basic scalars
+        # shows up (e.g. symbol-keyed data round-tripped through YAML::dump
+        # below). This is our own previously-saved preference, not
+        # attacker-controlled input, so unsafe_load is fine here.
+        code << "#{var_name(:params)} = YAML::unsafe_load(current_user.preference('list.#{view_method_name}', YAML::dump({})).value).symbolize_keys\n"
         code << "#{var_name(:params)} = {} unless #{var_name(:params)}.is_a?(Hash)\n"
       else
         code << "#{var_name(:params)} = {}\n"
